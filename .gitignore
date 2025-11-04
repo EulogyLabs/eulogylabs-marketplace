@@ -1,0 +1,22 @@
+# macOS cruft
+.DS_Store
+
+# Python/Node noise
+__pycache__/
+*.pyc
+venv/
+.env
+node_modules/
+
+# Heavy/binary assets (keep in Drive/Dropbox)
+*.wav *.aif *.aiff *.mp3
+*.mp4 *.mov *.m4a
+*.zip *.rar *.7z
+*.psd
+*.tif *.tiff
+*.png *.jpg *.jpeg *.webp
+*.pdf
+
+# REAPER artifacts (RPP is OK; media no)
+reaper-media/
+*.RPP-bak
