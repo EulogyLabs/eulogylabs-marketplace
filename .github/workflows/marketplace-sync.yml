@@ -1,0 +1,45 @@
+name: marketplace-sync
+
+on:
+  push:
+    branches: [ main, automation/marketplace-sync ]
+    paths:
+      - 'products/**'
+      - 'scripts/**'
+      - '.github/workflows/marketplace-sync.yml'
+  workflow_dispatch: {}
+
+jobs:
+  build-exports:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml pillow
+
+      - name: Build Etsy JSON listings
+        run: python scripts/build_listings.py
+
+      - name: Build Gumroad CSV
+        run: python scripts/build_gumroad_csv.py
+
+      - name: Build Site Feed JSON
+        run: python scripts/build_site_feed.py
+
+      - name: Upload artifacts (exports)
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketplace-exports
+          path: |
+            marketplaces/etsy/dist/**
+            marketplaces/gumroad/dist/**
+            marketplaces/site/dist/**
